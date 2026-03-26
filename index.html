@@ -239,9 +239,9 @@
             .date-grid { grid-template-columns: repeat(4, 1fr); }
         }
     </style>
-  <script type="module" crossorigin src="/assets/index-BGJgounv.js"></script>
 </head>
 <body>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -275,25 +275,21 @@
                         <p>SAFE SOLUTIONS. PEST-FREE LIVING.</p>
                     </div>
                 </div>
-                <h1>நீங்கள் கனவாக கட்டிய வீடு...<br><span>அதை பாதுகாத்துக்கொள்ளுங்கள்</span></h1>
-                <p class="subtitle">ஒலி இல்லை. அறிகுறி இல்லை.<br>ஆனால் சேதம் அதிகம்.</p>
+                <h1>The home you built with dreams...<br><span>Protect it today</span></h1>
+                <p class="subtitle">No sound. No signs.<br>But maximum damage.</p>
                 
                 <div class="hero-features">
-                    <div class="hero-feature"><i class="fas fa-check"></i> மேம்பட்ட கரையான் கட்டுப்பாடு</div>
-                    <div class="hero-feature"><i class="fas fa-check"></i> முழுமையான வீட்டு பாதுகாப்பு</div>
-                    <div class="hero-feature"><i class="fas fa-check"></i> ஆழமான கெமிக்கல் சிகிச்சை</div>
-                    <div class="hero-feature"><i class="fas fa-check"></i> நீண்டநாள் உறுதி செய்யப்பட்ட தீர்வு</div>
+                    <div class="hero-feature"><i class="fas fa-check"></i> Advanced Termite Control</div>
+                    <div class="hero-feature"><i class="fas fa-check"></i> Complete Home Protection</div>
+                    <div class="hero-feature"><i class="fas fa-check"></i> Deep Chemical Treatment</div>
+                    <div class="hero-feature"><i class="fas fa-check"></i> Long-lasting Guaranteed Solution</div>
                 </div>
 
-                <a href="#booking" class="btn btn-accent btn-lg" style="padding: 1rem 2.5rem; font-size: 1.25rem; color: #1e3a8a;">இன்று பாதுகாப்பு பெறுங்கள் - RI PEST CONTROL</a>
+                <a href="#booking" class="btn btn-accent btn-lg" style="padding: 1rem 2.5rem; font-size: 1.25rem; color: #1e3a8a;">Get Protected Today - RI PEST CONTROL</a>
             </div>
             <div class="hero-images">
                 <div class="hero-img-main">
-                    <img id="heroImage" src="https://images.unsplash.com/photo-1599839619722-39751411ea63?q=80&w=800&auto=format&fit=crop" alt="Pest Control Flyer" referrerPolicy="no-referrer">
-                    <div id="loadingOverlay" class="loading-overlay">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <span>Generating AI Image...</span>
-                    </div>
+                    <img id="heroImage" src="https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?q=80&w=800&auto=format&fit=crop" alt="Pest Control Worker Spraying" referrerPolicy="no-referrer">
                 </div>
             </div>
         </div>
@@ -485,6 +481,7 @@
             </div>
         </div>
     </section>
+
     <!-- FAQ Section -->
     <section id="faq" class="faq-section">
         <h2 class="section-title">Frequently Asked Questions</h2>
@@ -521,39 +518,6 @@
         <h2 class="section-title">Customer Reviews</h2>
         <div class="reviews-container">
             <div class="reviews-grid" id="reviewsGrid">
-                <div class="review-card">
-                    <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p class="review-text">"Excellent service! They cleared out the termite infestation in our home completely. Very professional and on time."</p>
-                    <div class="review-author">
-                        <div class="author-avatar">S</div>
-                        <div class="author-info">
-                            <h4>Sarah Jenkins</h4>
-                            <p>Homeowner</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="review-card">
-                    <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
-                    <p class="review-text">"We had a huge mosquito problem in our backyard. After their treatment, we can finally enjoy our evenings outside again."</p>
-                    <div class="review-author">
-                        <div class="author-avatar">M</div>
-                        <div class="author-info">
-                            <h4>Michael T.</h4>
-                            <p>Local Resident</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="review-card">
-                    <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p class="review-text">"Fast response for a rodent issue at my restaurant. They handled it discreetly and effectively. Highly recommended for businesses."</p>
-                    <div class="review-author">
-                        <div class="author-avatar">D</div>
-                        <div class="author-info">
-                            <h4>David Chen</h4>
-                            <p>Restaurant Owner</p>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="add-review-container">
@@ -722,6 +686,46 @@
             document.querySelector('.progress-bar').style.display = 'none';
             document.getElementById('successState').classList.add('show');
         }
+
+        // Review Form Submission
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('reviewName').value;
+            const text = document.getElementById('reviewText').value;
+            const rating = document.querySelector('input[name="rating"]:checked').value;
+            
+            let starsHtml = '';
+            for(let i=0; i<5; i++) {
+                if(i < rating) starsHtml += '<i class="fas fa-star"></i>';
+                else starsHtml += '<i class="far fa-star"></i>';
+            }
+            
+            const newReview = document.createElement('div');
+            newReview.className = 'review-card';
+            newReview.innerHTML = `
+                <div class="review-stars">${starsHtml}</div>
+                <p class="review-text">"${text}"</p>
+                <div class="review-author">
+                    <div class="author-avatar">${name.charAt(0).toUpperCase()}</div>
+                    <div class="author-info">
+                        <h4>${name}</h4>
+                        <p>Verified Customer</p>
+                    </div>
+                </div>
+            `;
+            
+            const grid = document.getElementById('reviewsGrid');
+            grid.insertBefore(newReview, grid.firstChild);
+            
+            document.getElementById('reviewSuccessMessage').style.display = 'block';
+            this.reset();
+            
+            setTimeout(() => {
+                document.getElementById('reviewSuccessMessage').style.display = 'none';
+            }, 4000);
+        });
+
         // FAQ Accordion
         document.querySelectorAll('.faq-question').forEach(button => {
             button.addEventListener('click', () => {
