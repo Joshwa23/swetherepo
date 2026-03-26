@@ -799,46 +799,6 @@
             document.querySelector('.progress-bar').style.display = 'none';
             document.getElementById('successState').classList.add('show');
         }
-
-        // Review Form Submission
-        document.getElementById('reviewForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('reviewName').value;
-            const text = document.getElementById('reviewText').value;
-            const rating = document.querySelector('input[name="rating"]:checked').value;
-            
-            let starsHtml = '';
-            for(let i=0; i<5; i++) {
-                if(i < rating) starsHtml += '<i class="fas fa-star"></i>';
-                else starsHtml += '<i class="far fa-star"></i>';
-            }
-            
-            const newReview = document.createElement('div');
-            newReview.className = 'review-card';
-            newReview.innerHTML = `
-                <div class="review-stars">${starsHtml}</div>
-                <p class="review-text">"${text}"</p>
-                <div class="review-author">
-                    <div class="author-avatar">${name.charAt(0).toUpperCase()}</div>
-                    <div class="author-info">
-                        <h4>${name}</h4>
-                        <p>Verified Customer</p>
-                    </div>
-                </div>
-            `;
-            
-            const grid = document.getElementById('reviewsGrid');
-            grid.insertBefore(newReview, grid.firstChild);
-            
-            document.getElementById('reviewSuccessMessage').style.display = 'block';
-            this.reset();
-            
-            setTimeout(() => {
-                document.getElementById('reviewSuccessMessage').style.display = 'none';
-            }, 4000);
-        });
-
         // FAQ Accordion
         document.querySelectorAll('.faq-question').forEach(button => {
             button.addEventListener('click', () => {
