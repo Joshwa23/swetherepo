@@ -242,6 +242,14 @@
 </head>
 <body>
 
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <a href="tel:+918680943498" class="top-bar-link"><i class="fas fa-phone-alt"></i> +91 86809 43498</a>
+            <a href="mailto:prasaindh12@gmail.com" class="top-bar-link"><i class="fas fa-envelope"></i> prasaindh12@gmail.com</a>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -687,6 +695,104 @@
             document.getElementById('successState').classList.add('show');
         }
 
+        // Review Storage and Rendering
+        const REVIEWS_STORAGE_KEY = 'riPestControlReviews_v4';
+        let memoryReviews = [];
+        
+        function getStoredReviews() {
+            try {
+                const stored = localStorage.getItem(REVIEWS_STORAGE_KEY);
+                return stored ? JSON.parse(stored) : memoryReviews;
+            } catch (e) {
+                console.warn('localStorage not available, using memory storage');
+                return memoryReviews;
+            }
+        }
+        
+        function setStoredReviews(reviews) {
+            memoryReviews = reviews;
+            try {
+                localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(reviews));
+            } catch (e) {
+                console.warn('localStorage not available, using memory storage');
+            }
+        }
+        
+        function loadReviews() {
+            let reviews = getStoredReviews();
+            
+            // Pre-populate with 3 default reviews if empty
+            if (reviews.length === 0) {
+                reviews = [
+                    { name: "John Davis", text: "RI Pest Control did an amazing job! We had a severe termite issue, and their team handled it professionally and quickly. Highly recommend.", rating: 5 },
+                    { name: "Priya S.", text: "Very prompt and effective service. The cockroach treatment worked wonders in our kitchen. The technicians were polite and explained everything.", rating: 5 },
+                    { name: "Robert M.", text: "Good experience overall. They arrived on time and the mosquito treatment has made our backyard usable again. Will definitely use them for annual maintenance.", rating: 4 }
+                ];
+                setStoredReviews(reviews);
+            }
+            
+            const grid = document.getElementById('reviewsGrid');
+            grid.innerHTML = ''; // Clear existing
+            
+            if (reviews.length === 0) {
+                grid.innerHTML = '<p id="noReviewsMsg" style="grid-column: 1/-1; text-align: center; color: var(--gray-500);">No reviews yet. Be the first to leave one!</p>';
+            } else {
+                reviews.forEach(review => {
+                    renderReview(review, false);
+                });
+            }
+        }
+        
+        function renderReview(review, prepend = true) {
+            let starsHtml = '';
+            for(let i=0; i<5; i++) {
+                if(i < review.rating) starsHtml += '<i class="fas fa-star"></i>';
+                else starsHtml += '<i class="far fa-star"></i>';
+            }
+            
+            const newReview = document.createElement('div');
+            newReview.className = 'review-card';
+            newReview.innerHTML = `
+                <div class="review-stars">${starsHtml}</div>
+                <p class="review-text">"${review.text}"</p>
+                <div class="review-author">
+                    <div class="author-avatar">${review.name.charAt(0).toUpperCase()}</div>
+                    <div class="author-info">
+                        <h4>${review.name}</h4>
+                        <p>Verified Customer</p>
+                    </div>
+                </div>
+            `;
+            
+            const grid = document.getElementById('reviewsGrid');
+            // Remove the "No reviews yet" message if it exists
+            const noReviewsMsg = document.getElementById('noReviewsMsg');
+            if (noReviewsMsg) {
+                noReviewsMsg.remove();
+            }
+            
+            if (prepend) {
+                grid.insertBefore(newReview, grid.firstChild);
+            } else {
+                grid.appendChild(newReview);
+            }
+        }
+
+        function saveReview(review) {
+            let reviews = getStoredReviews();
+            reviews.unshift(review); // Add to beginning
+            
+            // Keep up to 50 reviews to prevent localStorage overflow
+            if (reviews.length > 50) {
+                reviews.pop();
+            }
+            
+            setStoredReviews(reviews);
+        }
+
+        // Initialize reviews on load
+        loadReviews();
+
         // Review Form Submission
         document.getElementById('reviewForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -695,28 +801,10 @@
             const text = document.getElementById('reviewText').value;
             const rating = document.querySelector('input[name="rating"]:checked').value;
             
-            let starsHtml = '';
-            for(let i=0; i<5; i++) {
-                if(i < rating) starsHtml += '<i class="fas fa-star"></i>';
-                else starsHtml += '<i class="far fa-star"></i>';
-            }
+            const review = { name, text, rating: parseInt(rating) };
             
-            const newReview = document.createElement('div');
-            newReview.className = 'review-card';
-            newReview.innerHTML = `
-                <div class="review-stars">${starsHtml}</div>
-                <p class="review-text">"${text}"</p>
-                <div class="review-author">
-                    <div class="author-avatar">${name.charAt(0).toUpperCase()}</div>
-                    <div class="author-info">
-                        <h4>${name}</h4>
-                        <p>Verified Customer</p>
-                    </div>
-                </div>
-            `;
-            
-            const grid = document.getElementById('reviewsGrid');
-            grid.insertBefore(newReview, grid.firstChild);
+            renderReview(review, true);
+            saveReview(review);
             
             document.getElementById('reviewSuccessMessage').style.display = 'block';
             this.reset();
