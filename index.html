@@ -669,7 +669,7 @@
         }
 
         // Review Storage and Rendering
-        const REVIEWS_STORAGE_KEY = 'riPestControlReviews_v4';
+        const REVIEWS_STORAGE_KEY = 'riPestControlReviews_v6';
         let memoryReviews = [];
         
         function getStoredReviews() {
@@ -694,12 +694,14 @@
         function loadReviews() {
             let reviews = getStoredReviews();
             
-            // Pre-populate with 3 default reviews if empty
+            // Pre-populate with 5 default reviews if empty
             if (reviews.length === 0) {
                 reviews = [
-                    { name: "John Davis", text: "RI Pest Control did an amazing job! We had a severe termite issue, and their team handled it professionally and quickly. Highly recommend.", rating: 5 },
-                    { name: "Priya S.", text: "affordable service.", rating: 3.5 },
-                    { name: "Robert M.", text: "Good experience overall. They arrived on time and the mosquito treatment has made our backyard usable again. Will definitely use them for annual maintenance.", rating: 4 }
+                    { name: "Hema", text: "Excellent service! We had a major termite issue in our old house. The team was very professional and did a deep treatment. It's been six months and no signs of termites. Highly recommended.", rating: 5 },
+                    { name: "Surya", text: "The cockroach treatment was very effective. I tried many DIY sprays before but nothing worked like this. The staff was polite and arrived exactly on time.", rating: 5 },
+                    { name: "Janani", text: "Very satisfied with the mosquito control service. We can finally enjoy our garden in the evenings. They were very thorough with the corners and drains.", rating: 4 },
+                    { name: "Banu", text: "Good experience with RI Pest Control. They handled the rodent problem in our warehouse efficiently. A bit pricey but the results are worth it.", rating: 5 },
+                    { name: "Sabari", text: "Professional and reliable. They used eco-friendly chemicals which was my main concern for my kids. The general pest control was done neatly without any mess.", rating: 5 }
                 ];
                 setStoredReviews(reviews);
             }
