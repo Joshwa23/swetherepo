@@ -426,9 +426,9 @@
                     <div class="form-step" data-step="3">
                         <div class="summary-card">
                             <h3 style="margin-bottom: 1.5rem; color: var(--gray-800);">Booking Summary</h3>
-                            <div class="summary-row">
-                                <span>Services Selected</span>
-                                <div id="sumService" class="summary-services-list">-</div>
+                            <div class="summary-row" style="flex-direction: column; align-items: flex-start;">
+                                <span style="margin-bottom: 0.5rem; font-weight: 600;">Services Selected</span>
+                                <div id="sumService" class="summary-services-list" style="width: 100%;">-</div>
                             </div>
                             <div class="summary-row">
                                 <span>Date & Time</span>
@@ -652,7 +652,7 @@
             document.getElementById('progressFill').style.width = ((step+1)*33.33) + '%';
             
             if(step === 2) {
-                document.getElementById('sumService').innerHTML = bookingData.services.map(s => `<div><i class="fas fa-check" style="color: var(--primary); margin-right: 8px;"></i>${s}</div>`).join('');
+                document.getElementById('sumService').innerHTML = bookingData.services.map(s => `<div style="padding: 0.5rem; background: white; border: 1px solid var(--gray-200); border-radius: 8px; margin-bottom: 0.5rem; display: flex; align-items: center;"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 10px;"></i>${s}</div>`).join('');
                 document.getElementById('sumDateTime').innerText = bookingData.date + ' at ' + bookingData.time;
             }
         }
