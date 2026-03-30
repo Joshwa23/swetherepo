@@ -153,7 +153,7 @@
         .time-slot.selected { background: var(--primary); color: white; border-color: var(--primary); }
         
         .form-navigation { display: flex; justify-content: space-between; margin-top: 2rem; }
-        .summary-card { background: var(--gray-50); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid var(--gray-200); }
+        .summary-card { background: white; padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); }
         .summary-row { display: flex; justify-content: space-between; padding: 1.25rem 0; border-bottom: 1px solid var(--gray-200); align-items: flex-start; }
         .summary-row:last-child { border-bottom: none; padding-bottom: 0; }
         .summary-row span:first-child { color: var(--gray-500); font-weight: 600; }
@@ -426,9 +426,9 @@
                     <div class="form-step" data-step="3">
                         <div class="summary-card">
                             <h3 style="margin-bottom: 1.5rem; color: var(--gray-800);">Booking Summary</h3>
-                            <div class="summary-row" style="flex-direction: column; align-items: flex-start;">
-                                <span style="margin-bottom: 0.5rem; font-weight: 600;">Services Selected</span>
-                                <div id="sumService" class="summary-services-list" style="width: 100%;">-</div>
+                            <div class="summary-row">
+                                <span>Services Selected</span>
+                                <div id="sumService" class="summary-services-list">-</div>
                             </div>
                             <div class="summary-row">
                                 <span>Date & Time</span>
@@ -437,7 +437,7 @@
                         </div>
                         
                         <div class="form-navigation">
-                            <button type="button" class="btn" onclick="prevStep(3)">Back</button>
+                            <button type="button" class="btn" style="background: var(--gray-200); color: var(--gray-800); border: none;" onclick="prevStep(3)">Back</button>
                             <button type="button" class="btn btn-primary" style="background: var(--primary); padding: 0.75rem 2.5rem;" onclick="submitBooking()">
                                 <i class="fas fa-check-circle"></i> Submit Booking
                             </button>
@@ -652,7 +652,23 @@
             document.getElementById('progressFill').style.width = ((step+1)*33.33) + '%';
             
             if(step === 2) {
-                document.getElementById('sumService').innerHTML = bookingData.services.map(s => `<div style="padding: 0.5rem; background: white; border: 1px solid var(--gray-200); border-radius: 8px; margin-bottom: 0.5rem; display: flex; align-items: center;"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 10px;"></i>${s}</div>`).join('');
+                const serviceDescriptions = {
+                    'Termite Control': 'Deep chemical treatment to eradicate termites and protect your home.',
+                    'Cockroach Control': 'Targeted gel baiting and spray treatments to eliminate cockroaches.',
+                    'Mosquito Control': 'Barrier sprays and breeding ground elimination for mosquito-free spaces.',
+                    'Rodent Control': 'Safe trapping, baiting, and exclusion to remove mice and rats.'
+                };
+                
+                document.getElementById('sumService').innerHTML = bookingData.services.map(s => `
+                    <div style="text-align: right; margin-bottom: 0.5rem;">
+                        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: var(--gray-800);">
+                            <i class="fas fa-check" style="color: var(--primary);"></i> ${s}
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--gray-500); margin-top: 0.25rem; font-weight: 400; line-height: 1.4; max-width: 280px; margin-left: auto;">
+                            ${serviceDescriptions[s] || ''}
+                        </div>
+                    </div>
+                `).join('');
                 document.getElementById('sumDateTime').innerText = bookingData.date + ' at ' + bookingData.time;
             }
         }
