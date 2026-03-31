@@ -130,12 +130,12 @@
         .form-input { width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid var(--gray-200); border-radius: 12px; font-size: 1rem; }
         .input-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); }
         
-        .service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-        .service-option { padding: 1.5rem; border: 2px solid var(--gray-200); border-radius: 16px; cursor: pointer; text-align: center; transition: all 0.2s; position: relative; overflow: hidden; }
-        .service-option:hover { border-color: var(--primary-light); }
-        .service-option.selected { border-color: var(--primary); background: var(--primary-lighter); }
-        .service-option h4 { margin: 0; font-size: 1.1rem; color: var(--gray-800); }
-        .service-option .check-icon { position: absolute; top: 10px; right: 10px; color: var(--primary); display: none; }
+        .service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 2rem 0; }
+        .service-option { padding: 2rem; border: 2px solid var(--gray-200); border-radius: 16px; cursor: pointer; text-align: center; transition: all 0.3s ease; position: relative; overflow: hidden; background: white; }
+        .service-option:hover { border-color: var(--primary-light); box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15); transform: translateY(-2px); }
+        .service-option.selected { border-color: var(--primary); background: var(--primary-lighter); box-shadow: 0 6px 16px rgba(5, 150, 105, 0.25); }
+        .service-option h4 { margin: 0; font-size: 1.2rem; color: var(--gray-800); font-weight: 600; }
+        .service-option .check-icon { position: absolute; top: 12px; right: 12px; color: var(--primary); display: none; font-size: 1.5rem; }
         .service-option.selected .check-icon { display: block; }
         
         .mini-summary { margin-top: 1.5rem; padding: 1.5rem; background: var(--gray-50); border-radius: 12px; border: 1px solid var(--gray-200); display: none; }
