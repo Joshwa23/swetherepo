@@ -215,6 +215,16 @@
         .float-whatsapp { background-color: #25D366; }
         .float-call { background-color: var(--primary); }
 
+        /* Hidden Date/Time Input Styles */
+        #nativeDatePicker, #nativeTimePicker {
+            position: relative !important;
+            opacity: 1 !important;
+            width: 100% !important;
+            height: 100% !important;
+            cursor: pointer !important;
+            pointer-events: auto !important;
+        }
+
         @media (max-width: 768px) {
             .booking-container, .form-grid, .service-grid { grid-template-columns: 1fr; }
             .date-grid { grid-template-columns: repeat(4, 1fr); }
@@ -257,7 +267,7 @@
             </div>
             <div class="hero-images">
                 <div class="hero-img-main">
-                    <img id="heroImage" src="https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?q=80&w=800&auto=format&fit=crop" alt="Pest Control Worker Spraying" referrerPolicy="no-referrer">
+                    <img id="heroImage" src="https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?auto=format&fit=crop&w=800&q=80&w=400" alt="Pest Control Worker Spraying" referrerPolicy="no-referrer" style="object-fit: cover;">
                 </div>
             </div>
         </div>
@@ -286,6 +296,16 @@
                 <i class="fas fa-mosquito"></i>
                 <h3>Mosquito Management</h3>
                 <p>Seasonal mosquito barrier treatments so you can enjoy your outdoor spaces again.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-bed"></i>
+                <h3>Bed Bug Control</h3>
+                <p>Thorough inspection and targeted treatments to eliminate bed bugs from your home completely.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-bug"></i>
+                <h3>Fly Control</h3>
+                <p>Effective solutions to manage and prevent fly infestations in residential and commercial spaces.</p>
             </div>
         </div>
     </section>
@@ -377,6 +397,14 @@
                                 <i class="fas fa-check-circle check-icon"></i>
                                 <h4>Rodent Control</h4>
                             </div>
+                            <div class="service-option" onclick="toggleService(this, 'Bed Bug Control')">
+                                <i class="fas fa-check-circle check-icon"></i>
+                                <h4>Bed Bug Control</h4>
+                            </div>
+                            <div class="service-option" onclick="toggleService(this, 'Fly Control')">
+                                <i class="fas fa-check-circle check-icon"></i>
+                                <h4>Fly Control</h4>
+                            </div>
                         </div>
                         
                         <!-- Mini Summary for Step 1 -->
@@ -394,21 +422,22 @@
                     <!-- Step 2: Date & Time -->
                     <div class="form-step" data-step="2">
                         <div class="form-group full-width">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <label class="form-label" style="margin: 0;">Select Date</label>
-                                <!-- Calendar Icon Button triggering native date picker -->
-                                <div style="position: relative;">
-                                    <button type="button" class="btn" style="padding: 0.5rem 1rem; background: var(--gray-100); color: var(--gray-700); border: 1px solid var(--gray-200);" onclick="try { document.getElementById('nativeDatePicker').showPicker(); } catch(e) { document.getElementById('nativeDatePicker').focus(); }">
-                                        <i class="fas fa-calendar-alt"></i> Open Calendar
-                                    </button>
-                                    <input type="date" id="nativeDatePicker" style="position: absolute; right: 0; top: 100%; opacity: 0; pointer-events: none;" onchange="handleDatePick(this.value)">
-                                </div>
+                            <label class="form-label">Select Date</label>
+                            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                                <input type="date" id="nativeDatePicker" style="padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 12px; font-size: 1rem; cursor: pointer;">
+                                <i class="fas fa-calendar-alt" style="color: var(--primary); font-size: 1.5rem;"></i>
                             </div>
                             <div id="selectedDateDisplay" style="margin-bottom: 1rem; font-weight: 600; color: var(--primary);"></div>
                             <div class="date-grid" id="dateGrid"></div>
                         </div>
+                        
                         <div class="form-group full-width">
                             <label class="form-label">Select Time</label>
+                            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                                <input type="time" id="nativeTimePicker" style="padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 12px; font-size: 1rem; cursor: pointer;">
+                                <i class="fas fa-clock" style="color: var(--primary); font-size: 1.5rem;"></i>
+                            </div>
+                            <div id="selectedTimeDisplay" style="margin-bottom: 1rem; font-weight: 600; color: var(--primary);"></div>
                             <div class="time-slots">
                                 <div class="time-slot" onclick="selectTime(this, '09:00 AM')">9:00 AM</div>
                                 <div class="time-slot" onclick="selectTime(this, '11:00 AM')">11:00 AM</div>
@@ -417,7 +446,7 @@
                             </div>
                         </div>
                         <div class="form-navigation">
-                            <button type="button" class="btn" onclick="prevStep(2)">Back</button>
+                            <button type="button" class="btn" style="background: var(--gray-200); color: var(--gray-800); border: none;" onclick="prevStep(2)">Back</button>
                             <button type="button" class="btn btn-primary" onclick="nextStep(2)">Continue</button>
                         </div>
                     </div>
@@ -576,25 +605,38 @@
         }
 
         // Handle Native Date Picker
-        function handleDatePick(dateString) {
-            if(!dateString) return;
-            const [year, month, day] = dateString.split('-');
+        document.getElementById('nativeDatePicker').addEventListener('change', function() {
+            if(!this.value) return;
+            const [year, month, day] = this.value.split('-');
             const d = new Date(year, month - 1, day);
             
             document.querySelectorAll('.date-cell').forEach(c => c.classList.remove('selected'));
             bookingData.date = d.toDateString();
             document.getElementById('selectedDateDisplay').innerText = "Selected: " + bookingData.date;
-        }
+        });
+
+        // Handle Native Time Picker
+        document.getElementById('nativeTimePicker').addEventListener('change', function() {
+            if(!this.value) return;
+            const [hourStr, minuteStr] = this.value.split(':');
+            let hour = parseInt(hourStr, 10);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            hour = hour % 12;
+            hour = hour ? hour : 12;
+            const formattedTime = (hour < 10 ? '0' + hour : hour) + ':' + minuteStr + ' ' + ampm;
+            
+            document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+            bookingData.time = formattedTime;
+            document.getElementById('selectedTimeDisplay').innerText = "Selected: " + bookingData.time;
+        });
 
         // Toggle Multiple Services
         function toggleService(el, name) {
             const index = bookingData.services.indexOf(name);
             if (index > -1) {
-                // Remove service
                 bookingData.services.splice(index, 1);
                 el.classList.remove('selected');
             } else {
-                // Add service
                 bookingData.services.push(name);
                 el.classList.add('selected');
             }
@@ -620,10 +662,11 @@
             document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
             el.classList.add('selected');
             bookingData.time = time;
+            document.getElementById('selectedTimeDisplay').innerText = "Selected: " + bookingData.time;
+            document.getElementById('nativeTimePicker').value = '';
         }
 
         function nextStep(step) {
-            // Validation
             if (step === 1) {
                 const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'address'];
                 let isValid = true;
@@ -656,7 +699,9 @@
                     'Termite Control': 'Deep chemical treatment to eradicate termites and protect your home.',
                     'Cockroach Control': 'Targeted gel baiting and spray treatments to eliminate cockroaches.',
                     'Mosquito Control': 'Barrier sprays and breeding ground elimination for mosquito-free spaces.',
-                    'Rodent Control': 'Safe trapping, baiting, and exclusion to remove mice and rats.'
+                    'Rodent Control': 'Safe trapping, baiting, and exclusion to remove mice and rats.',
+                    'Bed Bug Control': 'Thorough inspection and targeted treatments to eliminate bed bugs.',
+                    'Fly Control': 'Effective solutions to manage and prevent fly infestations.'
                 };
                 
                 document.getElementById('sumService').innerHTML = bookingData.services.map(s => `
@@ -736,12 +781,10 @@
                 const faqItem = button.parentElement;
                 const isActive = faqItem.classList.contains('active');
                 
-                // Close all FAQs
                 document.querySelectorAll('.faq-item').forEach(item => {
                     item.classList.remove('active');
                 });
 
-                // If it wasn't active, open it
                 if (!isActive) {
                     faqItem.classList.add('active');
                 }
@@ -750,4 +793,3 @@
     </script>
 </body>
 </html>
-
