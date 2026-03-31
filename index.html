@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -354,7 +355,7 @@
                     <ul class="contact-list">
                         <li><i class="fas fa-phone"></i> +91 86809 43498</li>
                         <li><i class="fas fa-phone"></i> +91 93428 82679</li>
-                        <li><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="215153405240484f4549101361464c40484d0f424e4c">[email&#160;protected]</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a0d0d2c1d3c1c9cec4c89192e0c7cdc1c9cc8ec3cfcd">[email&#160;protected]</a></li>
                     </ul>
                 </div>
             </aside>
@@ -425,7 +426,7 @@
                             <label class="form-label">Select Date</label>
                             <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
                                 <input type="date" id="nativeDatePicker" style="padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 12px; font-size: 1rem; cursor: pointer;">
-                                <i class="fas fa-calendar-alt" style="color: var(--primary); font-size: 1.5rem;"></i>
+                                <i class="fas fa-calendar-alt" style="color: var(--primary); font-size: 1.5rem; cursor: pointer;" onclick="document.getElementById('nativeDatePicker').showPicker()"></i>
                             </div>
                             <div id="selectedDateDisplay" style="margin-bottom: 1rem; font-weight: 600; color: var(--primary);"></div>
                             <div class="date-grid" id="dateGrid"></div>
@@ -435,7 +436,7 @@
                             <label class="form-label">Select Time</label>
                             <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
                                 <input type="time" id="nativeTimePicker" style="padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 12px; font-size: 1rem; cursor: pointer;">
-                                <i class="fas fa-clock" style="color: var(--primary); font-size: 1.5rem;"></i>
+                                <i class="fas fa-clock" style="color: var(--primary); font-size: 1.5rem; cursor: pointer;" onclick="document.getElementById('nativeTimePicker').showPicker()"></i>
                             </div>
                             <div id="selectedTimeDisplay" style="margin-bottom: 1rem; font-weight: 600; color: var(--primary);"></div>
                             <div class="time-slots">
@@ -581,9 +582,9 @@
         </a>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         // Updated booking data state to hold multiple services
-        let bookingData = { services: [], date: '', time: '' };
+        window.bookingData = { services: [], date: '', time: '' };
 
         // Generate Quick Dates
         const dateGrid = document.getElementById('dateGrid');
@@ -597,8 +598,8 @@
             cell.onclick = () => {
                 document.querySelectorAll('.date-cell').forEach(c => c.classList.remove('selected'));
                 cell.classList.add('selected');
-                bookingData.date = d.toDateString();
-                document.getElementById('selectedDateDisplay').innerText = "Selected: " + bookingData.date;
+                window.bookingData.date = d.toDateString();
+                document.getElementById('selectedDateDisplay').innerText = "Selected: " + window.bookingData.date;
                 document.getElementById('nativeDatePicker').value = ''; // Reset native picker
             };
             dateGrid.appendChild(cell);
@@ -611,8 +612,8 @@
             const d = new Date(year, month - 1, day);
             
             document.querySelectorAll('.date-cell').forEach(c => c.classList.remove('selected'));
-            bookingData.date = d.toDateString();
-            document.getElementById('selectedDateDisplay').innerText = "Selected: " + bookingData.date;
+            window.bookingData.date = d.toDateString();
+            document.getElementById('selectedDateDisplay').innerText = "Selected: " + window.bookingData.date;
         });
 
         // Handle Native Time Picker
@@ -626,31 +627,31 @@
             const formattedTime = (hour < 10 ? '0' + hour : hour) + ':' + minuteStr + ' ' + ampm;
             
             document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
-            bookingData.time = formattedTime;
-            document.getElementById('selectedTimeDisplay').innerText = "Selected: " + bookingData.time;
+            window.bookingData.time = formattedTime;
+            document.getElementById('selectedTimeDisplay').innerText = "Selected: " + window.bookingData.time;
         });
 
         // Toggle Multiple Services
-        function toggleService(el, name) {
-            const index = bookingData.services.indexOf(name);
+        window.toggleService = function(el, name) {
+            const index = window.bookingData.services.indexOf(name);
             if (index > -1) {
-                bookingData.services.splice(index, 1);
+                window.bookingData.services.splice(index, 1);
                 el.classList.remove('selected');
             } else {
-                bookingData.services.push(name);
+                window.bookingData.services.push(name);
                 el.classList.add('selected');
             }
-            updateMiniSummary();
+            window.updateMiniSummary();
         }
 
         // Update Mini Summary in Step 1
-        function updateMiniSummary() {
+        window.updateMiniSummary = function() {
             const summaryDiv = document.getElementById('miniSummary');
             const summaryList = document.getElementById('miniSummaryList');
             
-            if (bookingData.services.length > 0) {
+            if (window.bookingData.services.length > 0) {
                 summaryDiv.style.display = 'block';
-                summaryList.innerHTML = bookingData.services.map(s => 
+                summaryList.innerHTML = window.bookingData.services.map(s => 
                     `<li><i class="fas fa-check-circle" style="color: var(--primary);"></i> ${s}</li>`
                 ).join('');
             } else {
@@ -658,15 +659,15 @@
             }
         }
 
-        function selectTime(el, time) {
+        window.selectTime = function(el, time) {
             document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
             el.classList.add('selected');
-            bookingData.time = time;
-            document.getElementById('selectedTimeDisplay').innerText = "Selected: " + bookingData.time;
+            window.bookingData.time = time;
+            document.getElementById('selectedTimeDisplay').innerText = "Selected: " + window.bookingData.time;
             document.getElementById('nativeTimePicker').value = '';
         }
 
-        function nextStep(step) {
+        window.nextStep = function(step) {
             if (step === 1) {
                 const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'address'];
                 let isValid = true;
@@ -681,11 +682,11 @@
                 });
                 if (!isValid) return alert('Please fill in all required fields.');
                 
-                if (bookingData.services.length === 0) {
+                if (window.bookingData.services.length === 0) {
                     return alert('Please select at least one service.');
                 }
             }
-            if (step === 2 && (!bookingData.date || !bookingData.time)) {
+            if (step === 2 && (!window.bookingData.date || !window.bookingData.time)) {
                 return alert('Please select both a date and a time.');
             }
 
@@ -704,7 +705,7 @@
                     'Fly Control': 'Effective solutions to manage and prevent fly infestations.'
                 };
                 
-                document.getElementById('sumService').innerHTML = bookingData.services.map(s => `
+                document.getElementById('sumService').innerHTML = window.bookingData.services.map(s => `
                     <div style="background: var(--gray-50); padding: 1rem; border-radius: 12px; border: 1px solid var(--gray-200); text-align: left;">
                         <div style="display: flex; align-items: center; gap: 10px; color: var(--gray-800); font-weight: 600; font-size: 1.05rem; margin-bottom: 0.5rem;">
                             <i class="fas fa-check-circle" style="color: var(--primary); font-size: 1.2rem;"></i> ${s}
@@ -714,17 +715,17 @@
                         </div>
                     </div>
                 `).join('');
-                document.getElementById('sumDateTime').innerText = bookingData.date + ' at ' + bookingData.time;
+                document.getElementById('sumDateTime').innerText = window.bookingData.date + ' at ' + window.bookingData.time;
             }
         }
 
-        function prevStep(step) {
+        window.prevStep = function(step) {
             document.querySelector(`.form-step[data-step="${step}"]`).classList.remove('active');
             document.querySelector(`.form-step[data-step="${step-1}"]`).classList.add('active');
             document.getElementById('progressFill').style.width = ((step-1)*33.33) + '%';
         }
 
-        function submitBooking() {
+        window.submitBooking = function() {
             document.getElementById('bookingForm').style.display = 'none';
             document.querySelector('.progress-bar').style.display = 'none';
             document.getElementById('successState').classList.add('show');
@@ -779,4 +780,20 @@
         document.querySelectorAll('.faq-question').forEach(button => {
             button.addEventListener('click', () => {
                 const faqItem = button.parentElement;
-                const isActive = faqItem.
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQs
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // If it wasn't active, open it
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+    
